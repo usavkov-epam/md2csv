@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: '/md2csv',
+  basePath: process.env.NODE_ENV === 'production' ? '/md2csv' : '',
   output: "export",
   reactStrictMode: true,
 };
