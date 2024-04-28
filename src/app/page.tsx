@@ -33,7 +33,7 @@ export default function Home() {
     const r = await parser.parse(files.reverse(), { cardNameFieldTag, listNameField });
     const blob = new Blob([r]);
 
-    // saveAs(blob, `${listNameField}.csv`);
+    saveAs(blob, `${listNameField}.csv`);
   }
 
   return (
