@@ -17,7 +17,7 @@ export default function Home() {
     const formData = new FormData(e.target as HTMLFormElement);
 
     const files = formData.getAll('md-files') as File[];
-    const cardNameFieldTag = formData.get('card-name') as HeadingTag;
+    const cardNameFieldTag = formData.get('card-name') as HeadingTag || 'h3';
     const listNameField = formData.get('list-name') as string;
 
     const parser = new Parser();
@@ -30,15 +30,15 @@ export default function Home() {
       return alert('Selected files contain invalid type');
     }
 
-    const r = await parser.parse(files, { cardNameFieldTag, listNameField });
+    const r = await parser.parse(files.reverse(), { cardNameFieldTag, listNameField });
     const blob = new Blob([r]);
 
-    saveAs(blob, `converted.csv`);
+    // saveAs(blob, `${listNameField}.csv`);
   }
 
   return (
     <main className="flex-auto flex flex-col items-center">
-      <h1 className="text-5xl m-8">Markdown to CSV (RS School) <sup className="italic text-green-300">Beta</sup></h1>
+      <h1 className="text-5xl m-8">Markdown to CSV (RS School) <sup className="italic text-green-300">Alfa</sup></h1>
       <h2>Generate a CSV file for uploading tasks to Trello based on the contents of Markdown files.</h2>
 
       <form
@@ -70,7 +70,7 @@ export default function Home() {
             />
           </label>
 
-          <label className="flex gap-5">
+          {/* <label className="flex gap-5">
             Card name source:
             <select
               name="card-name"
@@ -81,14 +81,14 @@ export default function Home() {
               // TODO: implement fields mapping
               // disabled
             >
-              {/* <option value="h1">h1 (#)</option>
-              <option value="h2">h2 (##)</option> */}
+              <option value="h1">h1 (#)</option>
+              <option value="h2">h2 (##)</option>
               <option value="h3">h3 (###)</option>
-              {/* <option value="h4">h4 (####)</option>
+              <option value="h4">h4 (####)</option>
               <option value="h5">h5 (#####)</option>
-              <option value="h6">h6 (######)</option> */}
+              <option value="h6">h6 (######)</option>
             </select>
-          </label>
+          </label> */}
         </fieldset>
 
         <button

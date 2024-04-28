@@ -7,6 +7,8 @@ const tagsMap = {
   h4: '####',
 }
 
+const sanitize = (str: string) => str.replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, "").trim();
+
 export class Parser {
   async parse(files: File[], configs: ParseConfigs) {
     const promises = [...files].map((file) => {
@@ -41,15 +43,20 @@ export class Parser {
     const lines = file.split('\n');
 
     lines.forEach(line => {
-      if (line.startsWith(`${mdHeadingTag} `)) {
-        cardName = line
-        .slice(mdHeadingTag.length)
-        .trim()
-        // TODO: dumb approach; requires refactoring
-        .replace(/^Issue/, '')
-        .replace(/"/g, '""');
+      const normalizedLine = sanitize(line)
+        .replaceAll('#', '')
+        .trim();
+
+      // TODO: map headings
+      // if (sanitize(line).startsWith(`${mdHeadingTag} `)) {
+      if (/^Issue RSS-.+/g.test(normalizedLine)) {
+        cardName = sanitize(line)
+          // TODO: dumb approach; requires refactoring
+          .replaceAll('#', '')
+          .replace('Issue ', '')
+          .replace(/"/g, '""');
       } else {
-        cardDescription += line.trim().replace(/"/g, '""') + '\n';
+        cardDescription += line.trim().replace(/"/g, '""');
       }
     });
 
@@ -64,7 +71,7 @@ export class Parser {
       : results.filter((res: PromiseSettledResult<string>) => res.status === 'fulfilled').map(({ value }: { value: string }) => value);
 
     return parsed.reduce((csvRes: string, fileRow: string) => {
-      return `${csvRes}\n${fileRow}\n`
+      return `${csvRes}\n${fileRow}`
     }, csvContent);
   }
 
