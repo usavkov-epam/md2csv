@@ -5,8 +5,12 @@ import { saveAs } from 'file-saver';
 
 import { Parser } from '../../parser';
 
-export const FilesDropZone = ({ inputId }) => {
-  const inputRef = useRef<HTMLInputElement>();
+interface FilesDropZoneProps {
+  inputId: string;
+}
+
+export const FilesDropZone = ({ inputId }: FilesDropZoneProps) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<FileList>();
   const [highlight, setHighlight] = useState(false);
 
@@ -28,7 +32,7 @@ export const FilesDropZone = ({ inputId }) => {
     setHighlight(false);
   }, []);
 
-  const onSelectFiels = useCallback((e) => {
+  const onSelectFiels = useCallback((e: any) => {
     setSelectedFiles(e.target?.files);
   }, []);
 
