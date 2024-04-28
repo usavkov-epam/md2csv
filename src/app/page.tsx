@@ -71,7 +71,7 @@ export default function Home() {
           </label>
 
           <label className="flex gap-5">
-            Card name:
+            Card name source:
             <select
               name="card-name"
               id="card-name-field"
