@@ -23,10 +23,10 @@ export class Parser {
     });
 
     const results = configs.allOrNothing
-    ? await Promise.all(promises)
-    : await Promise.allSettled(promises);
+      ? await Promise.all(promises)
+      : await Promise.allSettled(promises);
 
-    return this.normalizeResults(results as string[] | PromiseSettledResult<string>[], configs);
+    return this.normalizeResults(results, configs);
   }
 
   parseTextFile(file: string) {
@@ -34,10 +34,10 @@ export class Parser {
     return file;
   }
 
-  normalizeResults(results: string[] | PromiseSettledResult<string>[], configs: ParseConfigs) {
+  normalizeResults(results: any, configs: ParseConfigs) {  
     return configs.allOrNothing
       ? results
-      : results.filter(({ status }) => status === 'fulfilled').map(({ value }) => value)
+      : results.filter((res: PromiseSettledResult<string>) => res.status === 'fulfilled').map(({ value }: { value: string }) => value)
   }
 
   static validateFiles(files: FileList) {
