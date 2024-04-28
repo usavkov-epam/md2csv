@@ -7,9 +7,10 @@ import { Parser } from '../../parser';
 
 interface FilesDropZoneProps {
   inputId: string;
+  inputName: string;
 }
 
-export const FilesDropZone = ({ inputId }: FilesDropZoneProps) => {
+export const FilesDropZone = ({ inputId, inputName }: FilesDropZoneProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<FileList>();
   const [highlight, setHighlight] = useState(false);
@@ -38,14 +39,14 @@ export const FilesDropZone = ({ inputId }: FilesDropZoneProps) => {
 
   return (
     <div
-      className={`m-8 p-8 flex w-4/5 justify-center flex-col gap-5 items-center border-2 rounded-2xl
-        ${highlight ? 'border-blue-500 bg-blue-100' : 'border-orange-100 bg-orange-300'}`}
+      className={`p-8 flex-auto flex justify-center flex-col gap-5 items-center border-2 rounded-2xl border-dashed
+        ${highlight ? 'border-green-500 bg-green-100' : 'border-blue-900 bg-blue-200'}`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
       <label
-        className="w-64 flex flex-col items-center px-4 py-6 text-black rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
+        className="w-64 flex flex-col items-center px-4 py-6 text-black rounded-lg shadow-lg tracking-wide uppercase border border-blue-400 cursor-pointer hover:bg-blue"
         htmlFor={inputId}
       >
         Upload files
@@ -53,6 +54,7 @@ export const FilesDropZone = ({ inputId }: FilesDropZoneProps) => {
       <input
         ref={inputRef}
         id={inputId}
+        name={inputName}
         onChange={onSelectFiels}
         className="hidden"
         type="file"
@@ -61,10 +63,10 @@ export const FilesDropZone = ({ inputId }: FilesDropZoneProps) => {
       />
 
       <span className="font-medium text-gray-700"><b>OR</b></span>
-      <span className="font-medium text-gray-700">Drag and drop files here</span>
+      <span className="font-medium text-gray-700">Drop files here</span>
 
-      {selectedFiles?.length && (
-        <span className="font-medium text-gray-500">Selected files: {selectedFiles.length}</span>
+      {Boolean(selectedFiles?.length) && (
+        <span className="font-medium text-gray-500">Selected files: {selectedFiles!.length}</span>
       )}
     </div>
   );
