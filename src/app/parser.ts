@@ -56,7 +56,7 @@ export class Parser {
           .replace('Issue ', '')
           .replace(/"/g, '""');
       } else {
-        cardDescription += line.trim().replace(/"/g, '""');
+        cardDescription += line.trim().replace(/"/g, '""') + '\n';
       }
     });
 
